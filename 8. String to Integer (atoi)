@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int myAtoi(string s) {
+        int sign = 1, res = 0, hasNum = 0;
+        for(char c : s){
+            if(hasNum == 0 && (c == ' ' || c == '+')){
+                if(c == '+'){
+                    hasNum = 1;
+                }
+                continue;
+            }else if(hasNum == 0 && c == '-'){
+                sign = -1;
+                hasNum = 1;
+            }else if(!isdigit(c)){
+                break;
+            }else if(isdigit(c)){
+                if(hasNum == 0){
+                    hasNum = 1;
+                }
+                if(res > INT_MAX / 10){
+                    if(sign > 0){
+                        return INT_MAX;
+                    }else{
+                        return INT_MIN;
+                    }
+                }
+                if (res > INT_MAX / 10 || (res == INT_MAX / 10 && (c - '0') > 7)) {
+                    return sign == 1 ? INT_MAX : INT_MIN;
+                }
+                res = res * 10 + (c - '0');
+            }
+        }
+        return res * sign;
+    }
+};
